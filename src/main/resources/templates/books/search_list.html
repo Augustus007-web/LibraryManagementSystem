@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${pageTitle ?: '图书查询'}"></title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style> body { font-family: 'Inter', sans-serif; } </style>
+</head>
+<body class="bg-gray-100">
+<div th:replace="~{fragments/user_nav :: navbar}"></div>
+
+<div class="container mx-auto mt-8 p-4">
+  <h1 class="text-3xl font-semibold text-gray-800 mb-6" th:text="${pageTitle}">图书查询</h1>
+  <div th:if="${successMessage != null}" class="mb-4 p-3 bg-green-100 text-green-700 border border-green-300 rounded-md" th:text="${successMessage}"></div>
+  <div th:if="${errorMessage != null}" class="mb-4 p-3 bg-red-100 text-red-700 border border-red-300 rounded-md" th:text="${errorMessage}"></div>
+
+  <form th:action="@{/books/search}" method="get" class="mb-6 bg-white p-4 rounded-lg shadow">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+      <div>
+        <label for="keyword" class="block text-sm font-medium text-gray-700">关键词</label>
+        <input type="text" id="keyword" name="keyword" th:value="${keyword}" placeholder="书名、作者、ISBN" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+      </div>
+      <div>
+        <label for="categoryId" class="block text-sm font-medium text-gray-700">图书类别</label>
+        <select id="categoryId" name="categoryId" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+          <option value="">所有类别</option>
+          <option th:each="cat : ${categories}"
+                  th:value="${cat.id}"
+                  th:text="${cat.name}"
+                  th:selected="${selectedCategoryId != null && selectedCategoryId == cat.id}"></option>
+        </select>
+      </div>
+      <div class="flex space-x-2">
+        <button type="submit" class="w-full md:w-auto bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-md"><i class="fas fa-search mr-2"></i>搜索</button>
+        <a th:href="@{/books/search}" class="w-full md:w-auto text-center text-gray-600 hover:text-gray-800 py-2 px-4 rounded-md border border-gray-300 hover:bg-gray-50 transition">清空</a>
+      </div>
+    </div>
+  </form>
+
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <div th:if="${bookPage == null or bookPage.isEmpty()}" class="text-center text-gray-500 py-4">
+      <span th:if="${keyword != null || selectedCategoryId != null}">未找到符合条件的图书。</span>
+      <span th:unless="${keyword != null || selectedCategoryId != null}">暂无图书信息。</span>
+    </div>
+
+    <div th:unless="${bookPage == null or bookPage.isEmpty()}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-4">
+      <div th:each="book : ${bookPage.content}" class="border rounded-lg p-4 flex flex-col justify-between shadow hover:shadow-lg transition-shadow">
+        <div>
+          <img th:if="${book.coverImageUrl != null && !#strings.isEmpty(book.coverImageUrl)}" th:src="${book.coverImageUrl}" alt="封面" class="w-full h-48 object-contain mb-2 rounded-md" onerror="this.style.display='none'">
+          <div th:unless="${book.coverImageUrl != null && !#strings.isEmpty(book.coverImageUrl)}" class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-400 mb-2 rounded-md">无封面</div>
+
+          <h3 class="font-semibold text-lg text-indigo-700" th:text="${book.title}"></h3>
+          <p class="text-sm text-gray-600">作者: <span th:text="${book.author}"></span></p>
+          <p class="text-sm text-gray-500">ISBN: <span th:text="${book.isbn}"></span></p>
+          <p class="text-sm text-gray-500">类别: <span th:text="${book.category?.name ?: 'N/A'}"></span></p>
+          <p class="text-sm" th:classappend="${book.availableQuantity > 0 ? 'text-green-600' : 'text-red-600'}">
+            可借阅: <span th:text="${book.availableQuantity}"></span> / <span th:text="${book.quantity}"></span>
+          </p>
+        </div>
+        <div class="mt-3">
+          <form th:if="${book.availableQuantity > 0}" th:action="@{/borrow/{bookId}(bookId=${book.id})}" method="post" class="w-full">
+            <button type="submit" class="borrow-button w-full bg-green-500 hover:bg-green-600 text-white p-2 rounded text-sm transition" th:data-book-title="${book.title}">
+              <i class="fas fa-book-reader mr-1"></i> 借阅
+            </button>
+          </form>
+          <button th:unless="${book.availableQuantity > 0}" type="button"
+                  class="w-full bg-gray-400 text-white p-2 rounded text-sm cursor-not-allowed" disabled>
+            已借完
+          </button>
+        </div>
+      </div>
+    </div>
+    <div th:if="${bookPage != null && bookPage.totalPages > 0}" class="mt-6 flex items-center justify-between">
+      <div class="text-sm text-gray-700">
+        第 <span th:text="${bookPage.number + 1}"></span> 页，共 <span th:text="${bookPage.totalPages}"></span> 页 (总计 <span th:text="${bookPage.totalElements}"></span> 条记录)
+      </div>
+      <nav th:if="${bookPage.totalPages > 1}" aria-label="Pagination">
+        <ul class="inline-flex -space-x-px rounded-md shadow-sm">
+          <li th:classappend="${bookPage.first} ? 'pointer-events-none opacity-50' : ''">
+            <a th:href="@{/books/search(keyword=${keyword}, categoryId=${selectedCategoryId}, page=${bookPage.number - 1}, size=${bookPage.size}, sort=${sortField + ',' + sortDir})}"
+               class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">
+              <span class="sr-only">上一页</span><i class="fas fa-chevron-left"></i>
+            </a>
+          </li>
+          <li th:each="i : ${#numbers.sequence(0, bookPage.totalPages - 1)}"
+              th:if="${bookPage.totalPages <= 7 or (i == 0 or i == bookPage.totalPages - 1 or (i >= bookPage.number - 1 and i <= bookPage.number + 1))}">
+                            <span th:if="${(i == bookPage.number - 2 and bookPage.number > 2 and bookPage.totalPages > 7) or (i == bookPage.number + 2 and bookPage.number < bookPage.totalPages - 3 and bookPage.totalPages > 7)}"
+                                  class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300">...</span>
+            <a th:href="@{/books/search(keyword=${keyword}, categoryId=${selectedCategoryId}, page=${i}, size=${bookPage.size}, sort=${sortField + ',' + sortDir})}"
+               th:text="${i + 1}"
+               th:classappend="${i == bookPage.number} ? 'z-10 px-3 py-2 text-blue-600 border-blue-300 bg-blue-50' : 'px-3 py-2 text-gray-500 bg-white border-gray-300 hover:bg-gray-100'">
+            </a>
+          </li>
+          <li th:classappend="${bookPage.last} ? 'pointer-events-none opacity-50' : ''">
+            <a th:href="@{/books/search(keyword=${keyword}, categoryId=${selectedCategoryId}, page=${bookPage.number + 1}, size=${bookPage.size}, sort=${sortField + ',' + sortDir})}"
+               class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
+              <span class="sr-only">下一页</span><i class="fas fa-chevron-right"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const borrowButtons = document.querySelectorAll('.borrow-button');
+    borrowButtons.forEach(button => {
+      button.addEventListener('click', function(event) {
+        event.preventDefault(); // 阻止默认表单提交
+        const bookTitle = this.getAttribute('data-book-title');
+        if (confirm('确定要借阅《' + bookTitle + '》吗？')) {
+          this.closest('form').submit(); // 用户确认后提交表单
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<nav th:fragment="navbar" class="bg-gray-800 text-white p-4 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+        <a th:href="@{/admin/dashboard}" class="text-xl font-bold">管理后台</a>
+        <div class="flex items-center space-x-4">
+            <a th:href="@{/admin/categories}" class="px-3 py-2 rounded-md hover:bg-gray-700 transition">类别管理</a>
+            <a th:href="@{/admin/books}" class="px-3 py-2 rounded-md hover:bg-gray-700 transition">图书管理</a>
+            <a th:href="@{/admin/users}" class="px-3 py-2 rounded-md hover:bg-gray-700 transition">用户管理</a>
+            <a th:href="@{/admin/borrows}" class="px-3 py-2 rounded-md hover:bg-gray-700 transition">借阅管理</a>
+            <span class="border-l border-gray-600 h-6"></span>
+            <span th:if="${session.loggedInUser != null}" th:text="'管理员: ' + (${session.loggedInUser.name != null && !#strings.isEmpty(session.loggedInUser.name) ? session.loggedInUser.name : session.loggedInUser.username})"></span>
+            <a th:href="@{/}" class="px-3 py-2 rounded-md hover:bg-gray-700 transition">返回前台</a>
+            <a th:href="@{/logout}" class="px-3 py-2 rounded-md bg-red-500 hover:bg-red-600 transition">退出登录</a>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

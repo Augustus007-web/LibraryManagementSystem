@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>发生错误</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style> body { font-family: 'Inter', sans-serif; } </style>
+</head>
+<body class="bg-gray-100 flex flex-col min-h-screen">
+<main class="flex-grow container mx-auto mt-8 p-4 text-center">
+  <div class="bg-white p-8 rounded-lg shadow-lg inline-block">
+    <h1 class="text-4xl font-bold text-red-600 mb-4">哎呀！出错了</h1>
+    <p class="text-gray-700 mb-2" th:if="${status}" th:text="'错误代码: ' + ${status}"></p>
+    <p class="text-gray-700 mb-2" th:if="${error}" th:text="'错误类型: ' + ${error}"></p>
+    <p class="text-gray-700 mb-6" th:if="${message}" th:text="${message}">抱歉，我们遇到了一些技术问题。</p>
+    <p class="text-gray-600 mb-6" th:unless="${message}">服务器遇到临时问题，请稍后再试。</p>
+    <a th:href="@{/}" class="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-md transition">返回首页</a>
+  </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<nav th:fragment="navbar" class="bg-indigo-600 text-white p-4 shadow-md">
+  <div class="container mx-auto flex justify-between items-center">
+    <a th:href="@{/}" class="text-xl font-bold">图书管理系统</a>
+    <div class="flex items-center space-x-4">
+      <a th:href="@{/books/search}" class="px-3 py-2 rounded-md hover:bg-indigo-700 transition">查询图书</a>
+      <a th:href="@{/my-borrows}" class="px-3 py-2 rounded-md hover:bg-indigo-700 transition">我的借阅</a>
+      <span th:if="${session.loggedInUser != null && session.loggedInUser.role == 'ADMIN'}" class="border-l border-indigo-400 h-6"></span>
+      <a th:if="${session.loggedInUser != null && session.loggedInUser.role == 'ADMIN'}" th:href="@{/admin/dashboard}" class="px-3 py-2 rounded-md hover:bg-indigo-700 transition">管理后台</a>
+      <span class="border-l border-indigo-400 h-6"></span>
+      <span th:if="${session.loggedInUser != null}" th:text="'欢迎, ' + (${session.loggedInUser.name != null && !#strings.isEmpty(session.loggedInUser.name) ? session.loggedInUser.name : session.loggedInUser.username}) + ' (' + ${session.loggedInUser.role} + ')'"></span>
+      <a th:href="@{/logout}" class="px-3 py-2 rounded-md bg-red-500 hover:bg-red-600 transition">退出登录</a>
+    </div>
+  </div>
+</nav>
+</body>
+</html>

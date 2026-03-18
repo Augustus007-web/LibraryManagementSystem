@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<footer th:fragment="footer" class="bg-gray-800 text-white text-center p-4 mt-12">
+  <p>&copy; <span th:text="${#dates.year(#dates.createNow())}"></span> 老所刷图书管理系统. 保留所有权利归赵伟所有.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理后台 - 图书管理系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100">
+<nav class="bg-gray-800 text-white p-4 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+        <a th:href="@{/admin/dashboard}" class="text-xl font-bold">管理后台</a>
+        <div>
+            <span class="mr-4" th:if="${username}" th:text="'管理员: ' + ${username}"></span>
+            <a th:href="@{/}" class="px-3 py-2 rounded-md hover:bg-gray-700 transition">返回前台</a>
+            <a th:href="@{/logout}" class="px-3 py-2 rounded-md bg-red-500 hover:bg-red-600 transition">退出登录</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mx-auto mt-8 p-4">
+    <h1 class="text-3xl font-semibold text-gray-800 mb-6">管理员仪表盘</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+            <h2 class="text-xl font-semibold text-blue-700 mb-2">图书管理</h2>
+            <p class="text-gray-600 mb-4">管理图书信息、库存、分类等。</p>
+            <a th:href="@{/admin/books}" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition">管理图书</a>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+            <h2 class="text-xl font-semibold text-green-700 mb-2">用户管理</h2>
+            <p class="text-gray-600 mb-4">查看和管理注册用户信息。</p>
+            <a th:href="@{/admin/users}" class="inline-block bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md transition">管理用户</a>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+            <h2 class="text-xl font-semibold text-purple-700 mb-2">借阅管理</h2>
+            <p class="text-gray-600 mb-4">查看所有借阅记录，处理逾期等。</p>
+            <a th:href="@{/admin/borrows}" class="inline-block bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded-md transition">管理借阅</a>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+            <h2 class="text-xl font-semibold text-yellow-700 mb-2">类别管理</h2>
+            <p class="text-gray-600 mb-4">管理图书分类信息。</p>
+            <a th:href="@{/admin/categories}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-2 px-4 rounded-md transition">管理类别</a>
+        </div>
+    </div>
+</div>
+
+<footer class="bg-gray-800 text-white text-center p-4 mt-12 fixed bottom-0 w-full">
+    <p>&copy; <span th:text="${#dates.year(#dates.createNow())}"></span> 老所刷图书管理系统 - 管理后台</p>
+</footer>
+</body>
+</html>

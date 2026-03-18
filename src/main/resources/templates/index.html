@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图书管理系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100">
+<nav class="bg-indigo-600 text-white p-4 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+        <a th:href="@{/static}" class="text-xl font-bold">图书管理系统</a>
+        <div>
+            <span class="mr-4" th:if="${username}" th:text="'欢迎, ' + ${username} + ' (' + ${userRole} + ')'"></span>
+            <a th:if="${userRole == 'ADMIN'}" th:href="@{/admin/dashboard}" class="px-3 py-2 rounded-md hover:bg-indigo-700 transition">管理后台</a>
+            <a th:href="@{/books}" class="px-3 py-2 rounded-md hover:bg-indigo-700 transition">图书列表</a>
+            <a th:href="@{/my-borrows}" class="px-3 py-2 rounded-md hover:bg-indigo-700 transition">我的借阅</a>
+            <a th:href="@{/logout}" class="px-3 py-2 rounded-md bg-red-500 hover:bg-red-600 transition">退出登录</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mx-auto mt-8 p-4">
+    <h1 class="text-3xl font-semibold text-gray-800 mb-6">欢迎来到图书管理系统</h1>
+
+    <div th:if="${param.successMessage}" class="mb-4 p-4 bg-green-100 text-green-700 border border-green-300 rounded-md">
+        <p th:text="${param.successMessage[0]}"></p>
+    </div>
+    <div th:if="${successMessage}" class="mb-4 p-4 bg-green-100 text-green-700 border border-green-300 rounded-md">
+        <p th:text="${successMessage}"></p>
+    </div>
+
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+            <h2 class="text-xl font-semibold text-indigo-700 mb-2">查询图书</h2>
+            <p class="text-gray-600 mb-4">按书名、作者、ISBN等条件搜索馆藏图书。</p>
+            <a th:href="@{/books/search}" class="inline-block bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-md transition">开始查询</a>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+            <h2 class="text-xl font-semibold text-indigo-700 mb-2">我的借阅</h2>
+            <p class="text-gray-600 mb-4">查看当前借阅的图书、借阅历史和归还日期。</p>
+            <a th:href="@{/my-borrows}" class="inline-block bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-md transition">查看详情</a>
+        </div>
+
+        <div th:if="${userRole == 'ADMIN'}" class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+            <h2 class="text-xl font-semibold text-indigo-700 mb-2">图书管理</h2>
+            <p class="text-gray-600 mb-4">添加、修改或删除图书信息，管理图书库存。</p>
+            <a th:href="@{/admin/books}" class="inline-block bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-md transition">进入管理</a>
+        </div>
+    </div>
+</div>
+
+<footer class="bg-gray-800 text-white text-center p-4 mt-12">
+    <p>&copy; <span th:text="${#dates.year(#dates.createNow())}"></span> 老所刷图书管理系统. 保留所有权利归赵伟所有.</p>
+</footer>
+
+</body>
+</html>
