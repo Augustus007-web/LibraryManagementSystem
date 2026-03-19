@@ -50,15 +50,15 @@ mvn clean package
 # 运行
 java -jar target/library-management-system-*.jar
 
-默认访问地址：http://localhost:8081
+- 默认访问地址：http://localhost:8081
 
-前台首页：http://localhost:8081/
-登录页：http://localhost:8081/login
-管理后台：http://localhost:8081/admin/books （需管理员权限）
+- 前台首页：http://localhost:8081/
+- 登录页：http://localhost:8081/login
+- 管理后台：http://localhost:8081/admin/books （需管理员权限）
 
 ### 4.默认测试账号
-管理员：用户名 admin / 密码 123456 （role=ADMIN）
-普通用户：自行注册
+- 管理员：用户名 admin / 密码 123456 （role=ADMIN）
+- 普通用户：自行注册
 
 ## 5.项目结构
 src/main/java/com/example/librarysystem
