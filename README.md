@@ -60,7 +60,7 @@ java -jar target/library-management-system-*.jar
 管理员：用户名 admin / 密码 123456 （role=ADMIN）
 普通用户：自行注册
 
-## 项目结构
+## 5.项目结构
 src/main/java/com/example/librarysystem
 ├── controller       # Admin / User 控制器
 ├── dto              # 数据传输对象
@@ -69,7 +69,7 @@ src/main/java/com/example/librarysystem
 └── service          # 业务逻辑
 
 src/main/resources
-├── static           # css / js / images
+├── static           # css / js 
 ├── templates        # Thymeleaf 页面
 │   ├── admin
 │   ├── auth
@@ -78,7 +78,7 @@ src/main/resources
 │   └── user
 └── application.properties
 
-未来改进方向
+## 6.未来改进方向
 
 集成 Spring Security + JWT 认证
 支持图书封面图片上传
