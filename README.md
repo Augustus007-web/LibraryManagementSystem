@@ -48,7 +48,7 @@ spring.jpa.hibernate.ddl-auto=update
 mvn clean package
 
 ### 运行
-java -jar target/library-management-system-*.jar
+IDEA 直接运行 LibraryManagementSystemApplication 主类
 
 - 默认访问地址：http://localhost:8081
 
