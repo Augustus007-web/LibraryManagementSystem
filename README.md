@@ -76,7 +76,7 @@ src/main/java/com/example/librarysystem
 └── service
 
 src/main/resources
-├── static              # css / js / 图片
+├── static              # css / js 
 ├── templates           # Thymeleaf 模板
 │   ├── admin
 │   ├── auth
@@ -85,10 +85,9 @@ src/main/resources
 │   └── user
 └── application.properties
 
-未来改进方向（欢迎讨论 & PR）
+未来改进方向
 
 集成 Spring Security + JWT / OAuth2
-添加图书封面上传功能
 增加借阅逾期自动标记 & 罚款逻辑
 添加图书预约 / 续借功能
 前端升级为 Vue / React（可选）
