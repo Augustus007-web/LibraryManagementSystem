@@ -1,37 +1,32 @@
+# 图书管理系统
 
-### 1. 图书管理系统（LibraryManagementSystem）
+基于 **Spring Boot + Thymeleaf + Tailwind CSS** 的 Web 图书借阅管理系统，支持用户借阅和管理员后台管理。
 
-```markdown
-# 图书管理系统（前后端分离风格）
+## 项目功能
 
-基于 **Spring Boot + MySQL + Thymeleaf + Tailwind CSS** 的现代 Web 图书管理系统，支持用户与管理员两种角色。
+### 用户端（前台）
 
-## 功能模块一览
-
-### 用户端（普通读者）
-
-- 注册 / 登录 / 登出
-- 图书模糊搜索（书名 / 作者 / ISBN / 类别）
-- 图书列表展示（含封面、库存状态）
-- 借阅图书（需登录）
-- 查看我的借阅记录（含应还日期、逾期标记）
-- 归还图书
+- 用户注册 / 登录 / 登出
+- 图书搜索（支持书名、作者、ISBN、类别模糊查询）
+- 图书列表展示（含封面、库存、可借数量）
+- 图书借阅（需登录）
+- 查看个人借阅记录（显示借阅日期、应还日期、状态、逾期标记）
+- 图书归还
 
 ### 管理员端（/admin/*）
 
-- 仪表盘（待完善）
-- 图书管理（增删改查 + 类别选择 + ISBN 唯一校验）
-- 类别管理（增删改查）
-- 用户管理（查看列表、编辑基本信息、角色调整）
-- 所有借阅记录查看（分页 + 排序）
+- 图书管理：增删改查（含类别选择、ISBN 唯一校验）
+- 类别管理：增删改查
+- 用户管理：查看列表、编辑信息、调整角色
+- 借阅记录总览：分页、排序查看所有借阅记录
 
 ## 技术栈
 
-- **后端**：Spring Boot 3.x + Spring Data JPA + MySQL 8
+- **后端**：Spring Boot 3.x + Spring Data JPA
+- **数据库**：MySQL 8.0
 - **前端**：Thymeleaf + Tailwind CSS + Font Awesome
-- **数据库**：MySQL 8.0（含外键约束）
-- **安全**：Session + 简单角色控制（后续可升级 Spring Security）
 - **构建工具**：Maven
+- **安全**：基于 Session 的简单角色控制
 
 ## 快速开始
 
@@ -40,44 +35,42 @@
 - JDK 17+
 - Maven 3.6+
 - MySQL 8.0+
-- （推荐）IntelliJ IDEA
+- 推荐 IDE：IntelliJ IDEA
 
-### 2. 数据库准备
-
-1. 创建数据库 `library_db`
-2. 执行项目根目录下的 SQL 脚本（或参考文档中的建表语句）
-3. 修改 `src/main/resources/application.properties` 中的数据库用户名/密码
-
-```properties
+### 2.修改 src/main/resources/application.properties 中的数据库连接：
+spring.datasource.url=jdbc:mysql://localhost:3306/library_db?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
 spring.datasource.username=root
-spring.datasource.password=你的密码
+spring.datasource.password=你的数据库密码
+spring.jpa.hibernate.ddl-auto=update
 
-### 3. 运行项目
-## IDE 直接运行 LibraryManagementSystemApplication 主类
+### 3.运行项目
+# 编译打包
+mvn clean package
 
-默认端口：8081
-访问地址： 
-- 前台首页：http://localhost:8081/
-- 登录页：http://localhost:8081/login
-- 管理后台：http://localhost:8081/admin/dashboard （需管理员账号）
+# 运行
+java -jar target/library-management-system-*.jar
 
-- 默认账号（建议立即修改）
-- 管理员：admin / 123456 （role=ADMIN）
-- 普通用户：可自行注册
+默认访问地址：http://localhost:8081
 
-项目目录结构
+前台首页：http://localhost:8081/
+登录页：http://localhost:8081/login
+管理后台：http://localhost:8081/admin/books （需管理员权限）
+
+### 4.默认测试账号
+管理员：用户名 admin / 密码 123456 （role=ADMIN）
+普通用户：自行注册
+
+## 项目结构
 src/main/java/com/example/librarysystem
-├── config
-├── controller          # 控制层（Admin / User 分开）
-├── dto                 # 数据传输对象
-├── entity              # JPA 实体
-├── exception
-├── repository
-└── service
+├── controller       # Admin / User 控制器
+├── dto              # 数据传输对象
+├── entity           # JPA 实体类
+├── repository       # JPA Repository
+└── service          # 业务逻辑
 
 src/main/resources
-├── static              # css / js 
-├── templates           # Thymeleaf 模板
+├── static           # css / js / images
+├── templates        # Thymeleaf 页面
 │   ├── admin
 │   ├── auth
 │   ├── books
@@ -87,10 +80,10 @@ src/main/resources
 
 未来改进方向
 
-集成 Spring Security + JWT / OAuth2
-增加借阅逾期自动标记 & 罚款逻辑
-添加图书预约 / 续借功能
-前端升级为 Vue / React（可选）
-添加日志、异常统一处理、全局响应格式
+集成 Spring Security + JWT 认证
+支持图书封面图片上传
+添加逾期自动计算罚款
+增加图书预约 / 续借功能
+前端升级为 Vue 3 或 React
 
 
