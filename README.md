@@ -43,11 +43,11 @@ spring.datasource.username=root
 spring.datasource.password=你的数据库密码
 spring.jpa.hibernate.ddl-auto=update
 
-### 3.运行项目
-# 编译打包
+## 3.运行项目
+### 编译打包
 mvn clean package
 
-# 运行
+### 运行
 java -jar target/library-management-system-*.jar
 
 - 默认访问地址：http://localhost:8081
@@ -56,27 +56,10 @@ java -jar target/library-management-system-*.jar
 - 登录页：http://localhost:8081/login
 - 管理后台：http://localhost:8081/admin/books （需管理员权限）
 
-### 4.默认测试账号
+## 4.默认测试账号
 - 管理员：用户名 admin / 密码 123456 （role=ADMIN）
 - 普通用户：自行注册
 
-## 5.项目结构
-src/main/java/com/example/librarysystem
-├── controller       # Admin / User 控制器
-├── dto              # 数据传输对象
-├── entity           # JPA 实体类
-├── repository       # JPA Repository
-└── service          # 业务逻辑
-
-src/main/resources
-├── static           # css / js 
-├── templates        # Thymeleaf 页面
-│   ├── admin
-│   ├── auth
-│   ├── books
-│   ├── fragments
-│   └── user
-└── application.properties
 
 ## 6.未来改进方向
 
