@@ -65,7 +65,7 @@ IDEA 直接运行 LibraryManagementSystemApplication 主类
 ## 5.功能与视图展示
 ### 5.1 登录与注册
 ![登录](imgs/116.png)
-![注册](imgs/图片 17.png)
+![注册](imgs/117.png)
 
 ### 5.2 多重检索
 ![图书搜索](imgs/125.png)
